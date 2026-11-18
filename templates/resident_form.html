@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block page_title %}Resident details{% endblock %}{% block content %}
+<div class="form-wrap"><div class="eyebrow">RESIDENT PROFILE</div><h1>{{ 'Edit resident' if resident else 'Add a resident' }}</h1><p class="muted">Enter personal details and agreed financial amounts.</p>
+<form method="post" class="panel form-grid">
+<label>Full name<input name="name" required value="{{ resident.name if resident else '' }}"></label><label>Phone number<input name="phone" required value="{{ resident.phone if resident else '' }}"></label><label>Room number<input name="room_number" required value="{{ resident.room_number if resident else '' }}"></label><label>Joining date<input type="date" name="joining_date" required value="{{ resident.joining_date if resident else '' }}"></label>
+<div class="section-break"><h3>Financial agreement</h3><p>Enter amounts agreed with the resident at joining.</p></div>
+<label>Monthly rent (₹)<input type="number" min="0" step="0.01" name="monthly_rent" value="{{ resident.monthly_rent if resident else '0' }}" required></label>
+<label>Refundable security deposit (₹)<input type="number" min="0" step="0.01" name="security_deposit" value="{{ resident.security_deposit if resident else '0' }}" required></label>
+<label>One-time maintenance (₹)<input type="number" min="0" step="0.01" name="maintenance_fee" value="{{ resident.maintenance_fee if resident else '0' }}" required></label>
+{% if not resident %}<label>Advance rent received (₹)<input type="number" min="0" step="0.01" name="advance_amount" value="0" required></label>{% endif %}
+<div class="form-actions"><a class="button secondary" href="{{ url_for('dashboard') }}">Cancel</a><button class="button">Save resident</button></div></form></div>{% endblock %}
