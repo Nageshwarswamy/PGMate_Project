@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block page_title %}Dashboard{% endblock %}{% block content %}
+<div class="welcome"><div><div class="eyebrow">PROPERTY OVERVIEW</div><h1>Good day, PG Manager</h1><p>Here's what's happening at your property.</p></div><a class="button" href="{{ url_for('add_resident') }}">＋ Add resident</a></div>
+<div class="metric-grid">
+<div class="metric"><div class="metric-top"><span>Active residents</span><span class="metric-icon blue">♙</span></div><strong>{{ active }}</strong><small>Currently staying</small></div>
+<div class="metric"><div class="metric-top"><span>Past members</span><span class="metric-icon gray">♧</span></div><strong>{{ past }}</strong><small>Former residents</small></div>
+<div class="metric"><div class="metric-top"><span>Rent collected</span><span class="metric-icon green">₹</span></div><strong>₹{{ "%.0f"|format(rent_collected) }}</strong><small>Recorded paid rent</small></div>
+<div class="metric"><div class="metric-top"><span>Rent pending</span><span class="metric-icon amber">◷</span></div><strong>₹{{ "%.0f"|format(rent_pending) }}</strong><small>Marked as pending</small></div>
+<div class="metric"><div class="metric-top"><span>Deposits held</span><span class="metric-icon purple">◈</span></div><strong>₹{{ "%.0f"|format(deposits) }}</strong><small>Active residents' deposits</small></div>
+<div class="metric"><div class="metric-top"><span>Maintenance recorded</span><span class="metric-icon teal">⌂</span></div><strong>₹{{ "%.0f"|format(maintenance) }}</strong><small>One-time, non-refundable</small></div>
+</div>
+<section class="panel"><div class="panel-head"><div><h2>Current residents</h2><p>Resident details and their recorded rent totals</p></div><a class="text-link" href="{{ url_for('past_members') }}">Past members →</a></div>
+<div class="table-wrap"><table><thead><tr><th>Resident</th><th>Room</th><th>Joining date</th><th>Monthly rent</th><th>Paid rent</th><th>Pending entries</th><th>Deposit</th><th>Status</th><th></th></tr></thead><tbody>
+{% for r in residents if not r.leaving_date %}<tr><td><a class="name-link" href="{{ url_for('resident_detail',rid=r.resident_id) }}">{{ r.name }}</a><small>{{ r.phone }}</small></td><td><span class="room">{{ r.room_number }}</span></td><td>{{ r.joining_date }}</td><td>₹{{ "%.0f"|format(r.monthly_rent) }}</td><td class="positive">₹{{ "%.0f"|format(r.rent_paid) }}</td><td class="warning-text">₹{{ "%.0f"|format(r.rent_pending) }}</td><td>₹{{ "%.0f"|format(r.security_deposit) }}</td><td><span class="pill active">Active</span></td><td><a class="text-link" href="{{ url_for('vacate',rid=r.resident_id) }}">Vacate</a></td></tr>{% else %}<tr><td colspan="9" class="empty">No active residents. Add a resident to begin.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}
